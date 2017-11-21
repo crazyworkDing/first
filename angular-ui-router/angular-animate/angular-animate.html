@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/foundation/6.2.4/foundation.min.css">  
+	<script type="text/javascript" src = "http://cdn.bootcss.com/angular.js/1.5.0/angular.min.js"></script>  
+	<script type="text/javascript" src = "http://cdn.bootcss.com/angular.js/1.5.0/angular-animate.min.js"></script>
+	<link rel="stylesheet" href="./css/angular-animate.css">
+</head>
+<body>
+	<body ng-app = "MyApp" ng-controller = "MyCtrl" ng-init = "next()">//  
+    <div class = "mydiv text-center">  
+        <ul class = "no-bullet">  
+            <li class = "li-img" ng-show = "show01" ng-class = "{'fadeLeft':'left-animation', 'fadeRight':'right-animation'}[fade01]">  
+                <img src="http://e.hiphotos.baidu.com/image/pic/item/d4628535e5dde711dcad423caeefce1b9c1661f8.jpg">  
+            </li>  
+            <li class = "li-img" ng-show = "show02" ng-class = "{'fadeLeft':'left-animation', 'fadeRight':'right-animation'}[fade02]">  
+                <img src="http://g.hiphotos.baidu.com/image/pic/item/2cf5e0fe9925bc3102cb075257df8db1ca137061.jpg">  
+            </li>  
+            <li class = "li-img" ng-show = "show03" ng-class = "{'fadeLeft':'left-animation', 'fadeRight':'right-animation'}[fade03]">  
+                <img src="http://e.hiphotos.baidu.com/image/pic/item/4ec2d5628535e5ddab68a3157fc6a7efcf1b62b7.jpg">  
+            </li>  
+            <li class = "li-img" ng-show = "show04" ng-class = "{'fadeLeft':'left-animation', 'fadeRight':'right-animation'}[fade04]">  
+                <img src="http://e.hiphotos.baidu.com/image/pic/item/0823dd54564e9258052775fd9682d158ccbf4e96.jpg">  
+            </li>  
+            <li class = "li-img" ng-show = "show05" ng-class = "{'fadeLeft':'left-animation', 'fadeRight':'right-animation'}[fade05]">  
+                <img src="http://c.hiphotos.baidu.com/image/pic/item/7c1ed21b0ef41bd53719ef3e58da81cb38db3db5.jpg">  
+            </li>  
+        </ul>  
+        <div class = "leftButton" ng-click = "prevImg()">  
+            <button class = "button success large">上一张</button>  
+        </div>  
+        <div class = "rightButton" ng-click = "nextImg()">  
+            <button class = "button success large">下一张</button>  
+        </div>  
+    </div>  
+    <script type="text/javascript">  
+        var app = angular.module("MyApp", ['ngAnimate']);  
+        app.controller("MyCtrl", function ($scope,$interval,$timeout) {  
+            $scope.show01 = true;  
+            var index = 1;  
+            var timer;  
+            $scope.next = function () {  
+                switch(index){  
+                    case 1:  
+                        $scope.show01 = false;  
+                        $scope.fade01 = 'fadeLeft';  
+                        $scope.show02 = true;  
+                        $scope.fade02 = 'fadeRight';  
+                        index = 2;  
+                        break;  
+                    case 2:  
+                        $scope.show02 = false;  
+                        $scope.fade02 = 'fadeLeft';  
+                        $scope.show03 = true;  
+                        $scope.fade03 = 'fadeRight';  
+                        index = 3;  
+                        break;  
+                    case 3:  
+                        $scope.show03 = false;  
+                        $scope.fade03 = 'fadeLeft';  
+                        $scope.show04 = true;  
+                        $scope.fade04 = 'fadeRight';  
+                        index = 4;  
+                        break;  
+                    case 4:  
+                        $scope.show04 = false;  
+                        $scope.fade04 = 'fadeLeft';  
+                        $scope.show05 = true;  
+                        $scope.fade05 = 'fadeRight';  
+                        index = 5;  
+                        break;  
+                    case 5:  
+                        $scope.show05 = false;  
+                        $scope.fade05 = 'fadeLeft';  
+                        $scope.show01 = true;  
+                        $scope.fade01 = 'fadeRight';  
+                        index = 1;  
+                        break;  
+                };  
+                timer = $timeout(function () {  
+                    $scope.next();  
+                }, 3000);  
+            };  
+            $scope.prev = function () {  
+                switch(index){  
+                    case 1:  
+                        $scope.show01 = false;  
+                        $scope.fade01 = 'fadeRight';  
+                        $scope.show05 = true;  
+                        $scope.fade05 = 'fadeLeft';  
+                        index = 5;  
+                        break;  
+                    case 2:  
+                        $scope.show02 = false;  
+                        $scope.fade02 = 'fadeRight';  
+                        $scope.show01 = true;  
+                        $scope.fade01 = 'fadeLeft';  
+                        index = 1;  
+                        break;  
+                    case 3:  
+                        $scope.show03 = false;  
+                        $scope.fade03 = 'fadeRight';  
+                        $scope.show02 = true;  
+                        $scope.fade02 = 'fadeLeft';  
+                        index = 2;  
+                        break;  
+                    case 4:  
+                        $scope.show04 = false;  
+                        $scope.fade04 = 'fadeRight';  
+                        $scope.show03 = true;  
+                        $scope.fade03 = 'fadeLeft';  
+                        index = 3;  
+                        break;  
+                    case 5:  
+                        $scope.show05 = false;  
+                        $scope.fade05 = 'fadeRight';  
+                        $scope.show04 = true;  
+                        $scope.fade04 = 'fadeLeft';  
+                        index = 4;  
+                        break;  
+                };  
+                timer = $timeout(function () {  
+                    $scope.next();  
+                }, 3000);  
+            };  
+            $scope.nextImg = function () {  
+                if (angular.isDefined(timer)) {  
+                    $timeout.cancel(timer);  
+                    timer = undefined;  
+                }  
+                $scope.next();  
+            };  
+            $scope.prevImg = function () {  
+                if (angular.isDefined(timer)) {  
+                    $timeout.cancel(timer);  
+                    timer = undefined;  
+                }  
+                $scope.prev();  
+            };  
+        });  
+    </script>  
+</body>  
+</body>
+</html>

@@ -1,0 +1,86 @@
+
+        .mydiv{  
+            position: relative;  
+            width: 100%;  
+            height: 370px;  
+            background-color: green;  
+            overflow: hidden;  
+        }//整个div的样式  
+        .li-img{  
+            width: 100%;  
+            height: auto;  
+        }  
+        .leftButton{  
+            position: absolute;  
+            top: 45%;  
+        }  
+        .rightButton{  
+            position: absolute;  
+            top: 45%;  
+            right: 0;  
+        }  
+        @keyframes left-hide {  
+            from{  
+                margin-left: 0;  
+            }  
+            to{  
+                margin-left: -100%;  
+            }  
+        }//图片从左面隐藏的动画  
+        @keyframes left-show{  
+            from{  
+                margin-left: -100%;  
+            }  
+            to{  
+                margin-left: 0;  
+            }  
+        }//图片从左面出现的动画  
+        @keyframes right-hide{  
+            from{  
+                margin-left: 0;  
+            }  
+            to{  
+                margin-left: 100%;  
+            }  
+        }//图片从右面消失的动画  
+        @keyframes right-show{  
+            from{  
+                margin-left: 100%;  
+            }  
+            to{  
+                margin-left: 0;  
+            }  
+        }//图片从右面出现的动画  
+        <span style="white-space:pre">        </span>//设置从左面ng-show/hide的过程动画  
+        .left-animation{  
+            height: auto;  
+            position: absolute;  
+            top: 0;  
+            width: 100%;  
+            overflow: hidden;  
+        }  
+        .left-animation.ng-hide-add{  
+            animation: left-hide 1s;  
+              
+        }  
+        .left-animation.ng-hide-remove{  
+            animation: left-show 1s;  
+              
+        }  
+        <span style="white-space:pre">        </span>//设置从右面ng-show/hide的过程动画   
+        .right-animation{  
+            height: auto;  
+            width: 100%;  
+            position: absolute;  
+            top: 0;  
+            overflow: hidden;  
+        }  
+        .right-animation.ng-hide-add{  
+            animation: right-hide 1s;  
+              
+        }  
+        .right-animation.ng-hide-remove{  
+            animation: right-show 1s;  
+              
+        }  
+
