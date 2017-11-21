@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title> 
+    <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <style>
+        .c1{
+            color: red;
+        }
+    </style>
+    <script>
+        // $(document).ready(function(){
+        //     console.log($('#d1'))
+        // })
+        // 简写形式一
+        // $().ready(function(){
+        //     console.log($('#d1'))
+        // })
+        //
+        // 简写形式二
+        $(function(){
+            console.log($('#d1'))
+        })
+    </script>
+</head>
+<body>
+    <div id="d1"></div>
+    <div id="d2">
+        <span>123</span>
+        <p>
+            <span>abc</span>
+        </p>
+    </div>
+     <div id="d1">123123809</div>
+    <input type="button" onclick="fun()" value="点击">
+    <input type="button" onclick="fun1()" value="slideUp">
+    <input type="button" onclick="fun2()" value="slideDown">
+    <input type="button" onclick="fun3()" value="fadeIn">
+    <input type="button" onclick="fun4()" value="fadeOut">
+    <input type="button" onclick="fun5()" value="animate">
+    <input type="button" onclick="fun6()" value="animate2">
+    <script>
+        var d = $('<div></div>');
+        console.log(d);
+        var d1 = $('<div>123</div>');
+        console.log(d1);
+        var d2 = $('<div class="c2"><a href="#">链接</a></div>');
+        console.log(d2)
+        var d3 = $('<div class="c1">123</div>');
+        console.log(d3);
+        var d4 = $('<div></div><p></p>');//比较少用
+        console.log(d4);
+        $('#d1').append(d);
+        $('#d1').prepend(d1);
+        d1.after(d2);
+        d1.before(d3)
+        d3.remove();
+        $('div').remove('.c2');
+        $('#d1').empty();
+        $('span').replaceWith('<i>新文本</i>');
+        $('<b>加错效果</b>').replaceAll('i');
+        var d4 = $('#d2').clone();
+        $('body').append(d4);
+          function fun(){
+            $('#d1').show('slow');
+        }
+        function fun1(){
+            $('#d1').slideUp('slow');
+        }
+        function fun2(){
+            $('#d1').slideDown('slow');
+        }
+        function fun3(){
+            $('#d1').fadeIn(1000);
+        }
+        function fun4(){
+            $('#d1').fadeOut(500);
+        }
+        function fun5(){
+            $('#d1').animate({'margin-left':'200px'},800);
+        }
+        function fun6(){
+            console.log("-----")
+            $('#d1').animate({"padding":"100px"},800);
+        }
+    </script>
+</body>
+</html>
