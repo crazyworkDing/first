@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>文件上传</title>
+    <meta charset="utf-8"/>
+    <script src="js/angular.min.js"></script>
+    <script src="js/ng-file-upload.min.js"></script>
+    <script src="js/ng-file-upload-shim.min.js"></script>
+<body ng-app="app" ng-controller="ctrl">
+<img ngf-src="data.file || data.defaultImage" class="img-responsive"
+     style="width:200px; height: 200px; max-width:500px;"/>
+
+<div class="button" ngf-select="true" ngf-pattern="'image/*'" ngf-multiple="false" ng-model="data.file">
+    选择文件
+</div>
+<button ng-click="upload()">upload</button>
+<script>
+    var app = angular.module('app', ['ngFileUpload'])
+    app.controller('ctrl', function ($scope,Upload) {
+        $scope.data = {
+            file: null
+        };
+        $scope.upload = function () {
+            if (!$scope.data.file) {
+                return;
+            }
+
+            var url = $scope.params.url;  //params是model传的参数，图片上传接口的url
+            var data = angular.copy($scope.params.data || {}); // 接口需要的额外参数，比如指定所上传的图片属于哪个用户: { UserId: 78 }
+            data.file = $scope.data.file;
+
+            Upload.upload({
+                url: url,
+                data: data
+            }).success(function (data) {
+                $scope.hide(data);
+            }).error(function () {
+                logger.log('error');
+            });
+        };
+
+    })
+</script>
+</body>
+</html>
