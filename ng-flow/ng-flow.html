@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" flow-init="{target:'/upload'}" flow-file-success="$file.msg = $message"
+>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://cdn.bootcss.com/angular.js/1.4.6/angular.js"></script>
+	<script src="./js/ng-flow-standalone.js"></script>
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body flow-prevent-drop>
+	<div class="container">
+		<div flow-btn class="btn" flow-attrs="{accept:'image/*'}">upload</div>
+		<ul>
+			<li ng-repeat="file in $flow.files">{{$index+1}} {{file.name}} {{file.msg}}</li>
+		</ul>
+	</div>
+	<div ng-click="$flow.cancel()">drop</div>
+	<script>
+		var app = angular.module('app',['flow']);
+		app.config(['flowFactoryProvider', function (flowFactoryProvider) {
+		  flowFactoryProvider.defaults = {
+		    target: 'upload.php',
+		    permanentErrors: [404, 500, 501],
+		    maxChunkRetries: 1,
+		    chunkRetryInterval: 5000,
+		    simultaneousUploads: 4,
+		    singleFile: true
+		  };
+		  flowFactoryProvider.on('catchAll', function (event) {
+		    console.log('catchAll', arguments);
+		  });
+		  // Can be used with different implementations of Flow.js
+		  // flowFactoryProvider.factory = fustyFlowFactory;
+		}]);
+
+	</script>
+</body>
+</html>
