@@ -1,5 +1,184 @@
-大三就开始都会把控技术大咖三十多块哈萨克版本我都可能不萨博的酒吧模拟，傲视多啊。
-撒孔家店工行卡上个好的hash地区好滴哦哈是
-啊是大卡还是看记录
-大家坷拉时间
-123123
+<template>
+    <div class="login">
+        <div class="login-panel">
+            <div class="login-panel-body">
+                <div class="title">
+                    <div class="logo">
+                        <div class='img'></div>
+                        <hr class="line">
+                        <h1>数据服务管理系统</h1>
+                    </div>
+                    
+                    <!-- <ul>
+                        <li>快速构建定时分析任务</li>
+                        <li>定时执行分析任务</li>
+                        <li>舆情警报</li>
+                    </ul> -->
+                </div>
+                <div class="span"></div>
+                <div class="login-form">
+                    <div class="body">
+                        <!-- <div class="item">
+                            <h2>登录</h2>
+                        </div> -->
+                        <div class="item">
+                            <div class="text_content">用户名</div>
+                            <input type="text" placeholder="用户名" v-model="user">
+                        </div>
+                        <div class="item">
+                            <div class="text_content">密码</div>
+                            <input type="password" placeholder="密码" v-model="password">
+                        </div>
+                        <div class="item">
+                            <div class="btn" @click="toMain">登录</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      user:'',
+      password:''
+    }
+  },
+  methods: {
+    toMain() {
+      // console.log(this.$store.state.loadLogin)
+      this.$router.push("/main");
+    }
+  },
+  mounted() {
+    // this.$store.dispatch("loadLogin");
+    // this.$store.dispatch("loadLogin");
+  }
+};
+</script>
+
+
+<style lang="less" scoped>
+@logoSize: 100px;
+.login {
+  background-image: url("/static/img/login.bgi.jpg");
+  background-size: 100% 100%;
+  .login-panel {
+    padding: 200px 0;
+    .login-panel-body {
+      // display: flex;
+      // flex-flow: row;
+      width: 780px;
+      margin: 0 auto;
+      .title {
+        margin:0 auto;
+        width: 380px;
+        padding-top: 20px;
+        color: #fff;
+        .logo {
+          // display: flex;
+          // flex-flow: row;
+          .img {
+            background-image: url(/static/img/logo.png);
+            background-size: @logoSize @logoSize;
+            background-position: -0.12*@logoSize -0.08*@logoSize;
+            width: @logoSize - 0.12*@logoSize*2;
+            height: @logoSize - 0.08*@logoSize*2;
+            margin: 0 auto;
+          }
+          .line {
+            border: 1px solid black;
+            width: 200px;
+          }
+        }
+        h1 {
+          margin: 0px 0;
+          font-size: 28px;
+          text-align:center;
+          // line-height: @logoSize - 0.08*@logoSize*2;
+        }
+        ul {
+          list-style: none;
+          padding: 0;
+          li {
+          padding-left: 97px;
+            margin: 1em 0;
+          }
+        }
+      }
+      .span{
+          width: 60px;
+      }
+      .login-form {
+        padding: 20px;
+        // background-color: #fff;
+        .body {
+          text-align: center;
+          .item {
+            margin-bottom: (380-38*6-2*40)/3px;
+            .text_content {
+              width: 300px - 2px;
+              text-align: left;
+              margin: auto;
+              color:white;
+              padding-bottom: 5px;
+            }
+            h2 {
+              margin: 0;
+              text-align: center;
+              font-size: 33px;
+              padding: 0.5px 0;
+            }
+            input {
+              width: 300px - 2px;
+              font-size: 18px;
+              height: 34px;
+              border: 1px solid #888;
+              transition: all 0.5s;
+              padding-left: 4px;
+            }
+
+            input:hover,
+            input:focus {
+              border: 1px solid rgb(0, 193, 222);
+            }
+
+            .btn {
+              width: 300px-10px;
+              padding: 9px;
+              text-align: center;
+              font-size: 16px;
+              // border: 1px solid rgb(0, 193, 222);
+              color: rgb(0, 193, 222);
+              font-weight: 700;
+              cursor: pointer;
+              transition: all 0.5s;
+              border-radius: 20px;
+              background-color:#e8313e;
+              margin: auto;
+            }
+            .btn:hover {
+              background-color: rgb(0, 193, 222);
+              color: #fff;
+            }
+          }
+          .item:last-child {
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+}
+</style>
+
+
+
+0252000143dqw
+
+
+143dqw
+
