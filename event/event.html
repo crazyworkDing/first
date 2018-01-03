@@ -1,0 +1,236 @@
+<div ng-controller="EventController as showCase" class="event-analysis-template" ng-init="initializeEventContainer()">
+	<!-- <view-crumbs page-title="title" sub-title="subTitle"></view-crumbs> -->
+	<!-- 保存为书签 -->
+
+	<div class="col-sm-12 p10" style="border-bottom: 1px solid rgba(0,0,0,0.12);">
+		<div class="dsp-inbl">
+			<a data-method="open-dialog" data-original-title="" title="" class="csp">
+				<span class="glyphicon glyphicon-star-empty"></span>
+				<span class="bookmark-string">保存为书签</span>
+			</a>
+			<span class="sa-h-split" style=""></span>
+			<!-- 事件/session -->
+            <select class="form-control event-lselect" ng-model="customSession"
+                    ng-options="s.id as s.label for s in sessions">
+            </select>
+		</div>
+		<div class="event-header-right" style="top: 10px;">
+			<div class="dsp-inbl">{{slider.value}}</div>
+			<div style="min-width: 100px;" class="dsp-inbl">
+				<rzslider rz-slider-model="slider.value" rz-slider-options="slider.options"></rzslider>
+			</div>
+			<span class="sa-h-split"></span>
+            <select class="form-control event-lselect" ng-model="customCalculation" ng-options="c.id as c.label for c in calculations">
+            </select>
+			<span class="sa-h-split"></span>
+			<button type="button" class="btn btn-link" data-balloon="强制刷新数据" data-balloon-pos="down"> <i class="fa fa-refresh"></i> </button>
+			<span class="sa-h-split"></span>
+			<button type="button" class="btn btn-link" data-balloon="下载csv" data-balloon-pos="down" ng-click="downloadCsv()"> <i class="fa fa-download"></i> </button>
+		</div>
+	</div>
+
+
+	<!-- 主体 -->
+
+	<div class="col-sm-12 nopadding">
+		<!-- 请添加指标 -->
+		<div class="col-sm-12 nopadding">
+			<li ng-click="opsClickHandler($event)">
+				<div class='fold-bar'>
+					<i ng-class="{true: 'fa fa-minus-square-o csp', false: 'fa fa-plus-square-o csp', undefined: 'fa fa-plus-square-o csp'}[opsContainerData.active]"></i>
+					<span>请添加指标</span>
+				</div>
+			</li>
+			<!-- 嵌入 分三大块-->
+			<ul ng-show="opsContainerData.active">
+				<!-- measure-group A   任意事件  的  总次数  -->
+                <li class="li-item">
+                    <div class="item" style="padding: 10px 12px;" ng-repeat="measureItem in measureItems track by $index" ng-mouseenter="measureItem.clsVisible = measureItems.length>1 ? true : false" ng-mouseleave="measureItem.clsVisible=false">
+                    	<div class="measure-line-prefix">
+                    		<span data-method="line-prefix">{{measureItem.customAlphabet}}</span>
+                    	</div>
+
+						<ui-select ng-if="customSession==1" style="width: 230px; visibility: {{$index==0?'visible':'hidden'}}" class="event-lselect w180" ng-model="measureItem.customSessionMeasure" search-enabled="false">  
+						   <ui-select-match>  
+						       <span ng-bind="$select.selected.label"></span>  
+						   </ui-select-match>  
+						   <ui-select-choices repeat="s in (sessionMeasures | filter:$select.search) track by s.id">  
+						       <span class="ui-select-group-item" ng-bind="s.label"></span>  
+						   </ui-select-choices>  
+						</ui-select>  
+
+						<span ng-if="customSession==1" class="mtb8">的</span>
+
+                    	<!-- dropdown 数据源固定 ng-model-->
+						<ui-select class="event-lselect w180" ng-model="measureItem.customIndicator" search-enabled="false">  
+						   <ui-select-match>  
+						       <span ng-bind="$select.selected.label"></span>  
+						   </ui-select-match>  
+						   <ui-select-choices group-by="'group'" repeat="indicator in (indicators | filter:$select.search) track by indicator.id">
+						       <span class="ui-select-group-item" ng-bind="indicator.label"></span>  
+						   </ui-select-choices>  
+						</ui-select>  
+
+                    	<span class="mtb8">的</span>
+
+                    	<!-- dropdown3 -->
+						<ui-select class="event-lselect w180" ng-model="measureItem.customCalculator" search-enabled="false">  
+						   <ui-select-match>  
+						       <span ng-bind="$select.selected.label"></span>  
+						   </ui-select-match>  
+						   <ui-select-choices repeat="calculator in (calculators | filter:$select.search) track by calculator.id">  
+						       <span class="ui-select-group-item" ng-bind="calculator.label"></span>  
+						   </ui-select-choices>  
+						</ui-select>  
+
+                    	<i class="fa fa-close event-icon cls-icon" ng-show="measureItem.clsVisible" ng-click="removeMeasureItem($event, $index)" ng-mouseenter="this.css({'color': 'red'})"></i>
+                    </div>
+                    <i class="fa fa-plus-circle event-measure-plus" ng-click="addMeasureItem()"></i>              
+                </li>
+
+                <!-- segmentation-group 按xxx查看-->
+                <li class="li-item">
+                    <div class="item" style="padding: 7px 48px;" ng-repeat="segmentationItem in segmentationItems track by $index" ng-mouseenter="segmentationItem.clsVisible = segmentationItems.length>1 ? true : false" ng-mouseleave="segmentationItem.clsVisible=false">
+                    	<span class="mtb8">按</span>
+						<ui-select class="event-lselect w180" ng-model="segmentationItem.customSeg" search-enabled="false">  
+						   <ui-select-match>  
+						       <span ng-bind="$select.selected.label"></span>  
+						   </ui-select-match>  
+						   <ui-select-choices group-by="'group'" repeat="seg in (segs | filter:$select.search) track by seg.id">  
+						       <span class="ui-select-group-item" ng-bind="seg.label"></span>  
+						   </ui-select-choices>  
+						</ui-select> 
+			            <span class="mtb8">查看</span>
+                    	<i class="fa fa-close event-icon cls-icon" style="visibility: {{segmentationItem.clsVisible?'visible':'hidden'}}" ng-click="removeSegmentationItem($event, $index)" ng-mouseenter="this.css({'color': 'red'})"></i>
+                    	<i style="color: #84b9f4;" class="fa fa-plus event-icon" ng-show="$index==segmentationItems.length-1" ng-click="addSegmentationItem()"></i>
+                    </div>                     
+                </li>
+                <!-- filter-group IP  等于 -->
+                <li class="li-item item" style="padding: 0 100px; border-bottom: none">
+
+			        <div class="is-and-border" ng-if="filterItems.length > 1">
+			            <button style="z-index: 9999" ng-show="!isOr" ng-click="isOr = !isOr" class="btn btn-small or-and">且</button>
+			            <button style="z-index: 9999" ng-show="isOr" ng-click="isOr = !isOr" class="btn btn-small or-and">或</button>
+			        </div>
+
+                    <div ng-repeat="filterItem in filterItems track by $index" ng-mouseenter="filterItem.clsVisible=true" ng-mouseleave="filterItem.clsVisible=false">
+
+						<ui-select class="event-lselect w180" ng-model="filterItem.customLfilter" search-enabled="false">  
+						   <ui-select-match>  
+						       <span ng-bind="$select.selected.label"></span>  
+						   </ui-select-match>  
+						   <ui-select-choices group-by="'group'" repeat="lfilter in (lfilters | filter:$select.search) track by lfilter.id">  
+						       <span class="ui-select-group-item" ng-bind="lfilter.label"></span>  
+						   </ui-select-choices>  
+						</ui-select> 
+
+						<select class="form-control event-lselect" ng-model="filterItem.customMfilter" ng-options="mfilter.id as mfilter.label for mfilter in mfilters"></select>
+
+			            <tags-input class="tag" ng-model="filterItem.tags">
+			            	<auto-complete source="loadTags($query)"></auto-complete>
+			            </tags-input>
+			            <i class="fa fa-close event-icon cls-icon" ng-show="filterItem.clsVisible" ng-click="removeFilterItem($event, $index)" ng-mouseenter="this.css({'color': 'red'})"></i>
+                    </div>                
+                </li>
+                <button type="button" class="btn btn-link" ng-click="addFilterItem()">
+                	<i style="color: #84b9f4;" class="fa fa-plus event-icon"></i>
+                	<span>筛选条件</span>
+                </button> 
+			</ul>
+		</div>
+
+		<!-- chart -->
+		<div class="col-sm-12" style="border: 1px solid #d9dadb;">
+			<div class="pd">
+				<div class="event-datetimepicker">
+	                <i class="fa fa-calendar event-calender"></i>
+	                <input date-range-picker class="form-control date-picker event-date-time-picker" type="text" ng-model="dateRange" min="'2014-02-23'" max="'2015-02-25'" options="dateRangOptions"/>
+	                <span class="event-date-win">窗口期: 7天</span>
+				</div>
+				<div style="display: flex;" class="event-header-right">
+					<!-- 此处嵌tab嵌checkbox -->
+					<div class="btn-group" uib-dropdown>
+						<button id="single-button" type="button" class="btn btn-sm btn-default" uib-dropdown-toggle>
+							显示设置 <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" uib-dropdown-menu  ng-click="$event.stopPropagation()">
+							<uib-tabset active="0" type="tabs" style="min-width: 200px;">
+								<uib-tab index="0" heading="显示指标">
+									<table class="row-border hover dataTable brd0">
+										<!-- <thead> <tr> <th></th> </tr> </thead> -->
+										<tbody> 
+											<tr ng-repeat="d in displayItems track by $index">
+												<td class="center">
+													<input type="checkbox" class="custom-control-input csp" type="checkbox" ng-checked='true' ng-model="isIndicatorChecked" ng-click="checkItems(d.id, isIndicatorChecked, 0)">
+												</td>
+												<td class="left">{{d.label}}</td> 
+											</tr> 
+										</tbody>
+									</table>       	
+								</uib-tab>
+								<uib-tab index="1" heading="显示分组">
+									<div ng-if="groupItems.length == 0" style="padding: 7px 10px">无分组</div>
+									<table ng-if="groupItems.length > 0" class="row-border hover dataTable brd0">
+										<!-- <thead> <tr> <th></th> </tr> </thead> -->
+										<tbody> 
+											<tr ng-repeat="g in groupItems track by $index">
+												<td class="center">
+													<input type="checkbox" class="custom-control-input csp" type="checkbox" ng-model="isGroupChecked" ng-checked='true' ng-click="checkItems(g.id, isGroupChecked, 1)">
+												</td>
+												<td class="left">{{g.label}}</td> 
+											</tr> 
+										</tbody>
+									</table> 
+								</uib-tab>
+							</uib-tabset>
+						</ul>
+					</div>
+					<select class="form-control event-lselect" ng-model="customChartType" ng-options="c.id as c.label for c in chartTypes" ng-change="changeChartType()">
+					</select>
+					<select class="form-control event-lselect" ng-model="customGranularity" ng-options="g.id as g.label for g in granularities" ng-change="changeGranularity()">
+					</select>
+				</div>
+			</div>
+
+            <div class="event-chart"></div>
+		</div>
+
+		<!-- table -->
+		<div class="col-sm-12">
+			<div class="pd">
+				<label class="custom-control custom-checkbox event-lselect">
+					<input type="checkbox" class="custom-control-input" type="checkbox" ng-model="isTotalDispaly">
+					<span class="custom-control-description">显示合计</span>
+				</label>
+				<div class="btn-group event-header-right">
+					<button type="button" ng-class="{true: 'btn btn-sm btn-default btn-info', false: 'btn btn-sm btn-default', undefined: 'btn btn-sm btn-default'}[isTranspositionActive]" ng-click='isTranspositionActive=!isTranspositionActive'> <i class="fa fa-external-link"></i> </button>
+					<!-- <button type="button" class="btn btn-link"> <i class="fa fa-percent"></i> </button> -->
+					<span class="btn btn-sm btn-default" ng-class="{true: 'btn btn-sm btn-default btn-info', false: 'btn btn-sm btn-default', undefined: 'btn btn-sm btn-default'}[isPercentageVisible]" ng-click='isPercentageVisible=!isPercentageVisible'>%</span>
+				</div>
+			</div>
+
+			<table class="row-border hover dataTable" >
+				<thead> 
+					<tr> 
+						<th ng-if="isTotalDispaly ? true : $index!=2" class="center" ng-repeat="h in eventHeaders track by $index">
+							{{h}}
+						</th> 
+					</tr> 
+				</thead>
+				<tbody> 
+					<tr ng-repeat="tr_data in tableData track by $index" ng-init="trIndex = $index">
+						<td ng-if="isTotalDispaly ? true : $index!=2" class="center" ng-repeat="td_data in tr_data track by $index">
+							<div>{{td_data}}</div>
+							<div ng-if="(isTotalDispaly ? $index>2 : $index>1) && isPercentageVisible" style="color: green" ng-bind="getPercentage(td_data, trIndex)"></div>
+						</td>
+					</tr> 
+				</tbody>
+			</table> 			
+		</div>
+	</div>
+</div>
+
+
+<!-- <style type="text/css">
+
+</style> -->
